@@ -8,12 +8,12 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 LARGURA = 1240
 ALTURA_MIN = 1600
 MARGEM = 90
-COL_ESQ = 520          # largura da coluna esquerda (título + foto)
+COL_ESQ = 520         
 COL_DIR_X = MARGEM + COL_ESQ + 60
-RODAPE = 130           # faixa do telefone/endereço (só aparece se preenchido)
-ORNAMENTO = 150        # altura das espigas de trigo
+RODAPE = 130          
+ORNAMENTO = 150      
 
-# Temas prontos: (fundo, títulos, texto). O primeiro usa as cores da fachada.
+
 TEMAS = {
     "Azul da fachada": ("#17306B", "#F5C84C", "#FFFFFF"),
     "Chocolate":       ("#5E2C1A", "#FFF3C4", "#FFFFFF"),
@@ -142,7 +142,7 @@ def renderizar_cardapio(nome, slogan, secoes, foto_bytes=None,
 
     medidor = ImageDraw.Draw(Image.new("RGB", (10, 10)))
 
-    # nome: reduz a letra até a palavra mais longa caber na coluna
+
     for tam_nome in range(96, 43, -4):
         f_nome = _fonte(FONTES_SERIF_BOLD, tam_nome)
         if all(medidor.textlength(p, font=f_nome) <= COL_ESQ for p in nome.upper().split()):
@@ -184,7 +184,6 @@ def renderizar_cardapio(nome, slogan, secoes, foto_bytes=None,
     img = Image.new("RGB", (LARGURA, altura), fundo)
     d = ImageDraw.Draw(img)
 
-    # ---- coluna esquerda: nome da padaria + slogan + espigas ----
     yy = MARGEM
     if sobretitulo.strip():
         _texto_espacado(d, (MARGEM, yy), sobretitulo.upper(), f_sobre, c_titulo, 8)
@@ -200,7 +199,7 @@ def renderizar_cardapio(nome, slogan, secoes, foto_bytes=None,
     for k, alt in enumerate((ORNAMENTO - 20, ORNAMENTO, ORNAMENTO - 20)):
         _espiga(d, MARGEM + 40 + k * 70, y_orn + ORNAMENTO, alt, c_titulo)
 
-    # ---- foto no canto inferior esquerdo (acima do rodapé) ----
+
     if foto_bytes:
         try:
             foto = Image.open(io.BytesIO(foto_bytes))
@@ -213,7 +212,7 @@ def renderizar_cardapio(nome, slogan, secoes, foto_bytes=None,
         except Exception:
             pass
 
-    # ---- coluna direita: seções e itens ----
+
     for bloco in layout:
         if bloco[0] == "secao":
             d.text((COL_DIR_X, bloco[2]), bloco[1], font=f_secao, fill=c_titulo)
@@ -239,7 +238,6 @@ def renderizar_cardapio(nome, slogan, secoes, foto_bytes=None,
             for i, linha in enumerate(desc):
                 d.text((COL_DIR_X, y0 + 46 + 34 * i), linha, font=f_desc, fill=c_desc)
 
-    # ---- rodapé: telefone / endereço ----
     if rodape:
         topo = altura - RODAPE
         d.line((MARGEM, topo, LARGURA - MARGEM, topo), fill=c_linha, width=3)
