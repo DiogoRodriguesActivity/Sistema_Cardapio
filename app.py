@@ -1,4 +1,4 @@
-"""Gerador de Cardápio para Padaria.  Execute com:  streamlit run app.py"""
+
 import json
 from pathlib import Path
 import streamlit as st
@@ -98,7 +98,7 @@ with col_edit:
         st.rerun()
 
     # ---------------- seções e itens ----------------
-    st.subheader("📝 Itens do cardápio")
+    st.subheader(" Itens do cardápio")
     for i, sec in enumerate(st.session_state.secoes):
         sid = sec["id"]
         with st.expander(f"{sec['nome'] or 'Nova seção'}  ({len(sec['itens'])} itens)", expanded=True):
